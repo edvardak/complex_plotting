@@ -1,7 +1,7 @@
-# Optional: Installation
-using Pkg
-Pkg.add("Plots")
-Pkg.add("SpecialFunctions")
+## Optional: installation
+# using Pkg
+# Pkg.add("Plots")
+# Pkg.add("SpecialFunctions")
 
 ## Imports
 using Plots
@@ -30,12 +30,23 @@ end
 
 ## Plotting
 # https://techytok.com/lesson-plotting/
+
 plotly()
+zeta_abs(x,y)= min(abs(alt_series_zeta(complex(x,y))),2)
+zeta_arg(x,y)= rad2deg(angle(alt_series_zeta(complex(x,y))))
+# length = (size(x)[1], size(y)[1])
 
-# zeta_abs(x,y)= min(abs(alt_series_zeta(complex(x,y))),2)
-zeta_abs(x,y)= log(1+abs(alt_series_zeta(complex(x,y))))
+arguments = [zeta_arg(a,b) for a in x, b in y]
+arguments = replace(arguments, NaN=>0) # NaN => missing
+col = trunc.(Int,arguments)
 
-surface(x,y,zeta_abs, size = (700, 600))
-plot!(xlab=raw"x", ylab="y", zlab="ln(1+ |zeta(x+iy)|)")
+surface(x,y,zeta_abs) # ,color=col, colorscale="YlGnBu")
+plot!(xlab=raw"x", ylab="y", zlab="min( |zeta(x+iy)|, 2 )")
 
 savefig("zeta.html")
+
+
+z(x,y) = min(abs(exp(inv(complex(x,y)))),2)
+plotly()
+surface(x,y,z)
+savefig("e_z_inv.html")

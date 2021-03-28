@@ -20,4 +20,5 @@ y=im_lower:step:im_upper
 z(x,y) = min(abs(exp(inv(complex(x,y)))),4)
 plotly()
 surface(x,y,z, size = (700, 600))
+plot!(xlab=raw"x", ylab="y", zlab="min(|f(x+iy)|,4)")
 savefig("e_z_inv.html")
